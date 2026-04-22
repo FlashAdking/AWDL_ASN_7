@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from db_config import SessionLocal, IrisRecord 
+import random
 
 # Load environment variables from .env
 load_dotenv()
@@ -41,6 +42,35 @@ def intro():
     return {
         "message" : "we are FastAPI server",
         "PORT" : int(os.getenv("FASTAPI_PORT", 8000))
+    }
+
+
+
+# some swagger API's
+
+@app.get("/random")
+def get_random():
+    """Generates a simple random number [cite: 23, 37]"""
+    return {"random_number": random.randint(1, 100)}
+
+@app.get("/random/{start}/{end}")
+def get_random_range(start: int, end: int):
+    """Generates a random number within a specific path-parameter range [cite: 23, 39]"""
+    return {
+        "start": start,
+        "end": end,
+        "random_number": random.randint(start, end)
+    }
+
+@app.get("/random-safe/{start}/{end}")
+def get_random_safe(start: int, end: int):
+    """Validation case: checks if start is less than end [cite: 24, 41, 143]"""
+    if start >= end:
+        return {"error": "Start must be less than End"}
+    return {
+        "start": start,
+        "end": end,
+        "random_number": random.randint(start, end)
     }
 
 @app.post("/predict")
