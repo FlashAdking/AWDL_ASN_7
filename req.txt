@@ -1,0 +1,10 @@
+Flask
+joblib
+scikit-learn
+SQLAlchemy
+PyMySQL
+python-dotenv
+fastapi
+uvicorn
+requests
+flask-cors

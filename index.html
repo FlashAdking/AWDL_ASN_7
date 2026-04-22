@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iris Prediction API</title>
+</head>
+
+<body>
+
+    <h2>Iris Model Predictor</h2>
+
+    <label>Sepal Length:</label>
+    <input type="number" id="sepal_len" step="0.1"><br><br>
+
+    <label>Sepal Width:</label>
+    <input type="number" id="sepal_width" step="0.1"><br><br>
+
+    <label>Petal Length:</label>
+    <input type="number" id="petal_len" step="0.1"><br><br>
+
+    <label>Petal Width:</label>
+    <input type="number" id="petal_width" step="0.1"><br><br>
+
+    <button onclick="sendPredictionRequest()">Predict</button>
+
+    <h3>Result:</h3>
+    <pre id="resultArea" style="background-color: #f4f4f4; padding: 10px; border: 1px solid #ccc; width: 300px;"></pre>
+
+    <script>
+        async function sendPredictionRequest() {
+            // Clear previous results
+            document.getElementById('resultArea').innerText = "Loading...";
+
+            // 1. Get the values from the input fields
+            const payload = {
+                sepal_len: parseFloat(document.getElementById('sepal_len').value),
+                sepal_width: parseFloat(document.getElementById('sepal_width').value),
+                petal_len: parseFloat(document.getElementById('petal_len').value),
+                petal_width: parseFloat(document.getElementById('petal_width').value)
+            };
+
+            // 2. Define your API endpoint here
+            const apiUrl = "http://127.0.0.1:8000/predict";
+
+            try {
+                // 3. Send the POST request using Fetch API
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"  
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // 4. Parse the JSON response
+                const resultData = await response.json();
+
+                // 5. Display the response inside the <pre> tag
+                document.getElementById('resultArea').innerText = JSON.stringify(resultData, null, 2);
+
+            } catch (error) {
+                // Display errors (like server being down)
+                console.log(error.message);
+                document.getElementById('resultArea').innerText = "Error connecting to API:\n" + error.message;
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+ 
+iris_model table
+
+ create table iris_model(
+     id int PRIMARY KEY AUTO_INCREMENT,
+     sepeal_len decimal(4,2),
+     sepal_width decimal(4,2),
+     petal_len decimal(4,2),
+     petal_width decimal(4,2),
+     output int 
+);
